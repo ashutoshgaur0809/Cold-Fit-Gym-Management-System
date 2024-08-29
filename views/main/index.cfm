@@ -55,7 +55,7 @@
                   </div>
                 </div>
               </div>
-              <form action="#event.buildLink("Main/register")#" name="insertUser" method="post">
+              <form action="#event.buildLink("Main/register")#" name="insertUser" method="post" enctype="multipart/form-data">
                 <div class="row gy-3 overflow-hidden">
                   <div class="col-12">
                     <div class="form-floating mb-3">
@@ -82,12 +82,12 @@
                       <label for="city" class="form-label">City</label>
                     </div>
                   </div>
-                  <!--- <div class="col-12">
+                  <div class="col-12">
                     <div class="form-floating mb-3">
-                      <input type="file" class="form-control" accept="image/*" name="image" id="image" placeholder="image" value="#image#" required>
+                      <input type="file" class="form-control"  name="image" id="image" placeholder="image" value="#image#" required>
                       <label for="image" class="form-label">Upload Image</label>
                     </div>
-                  </div> --->
+                  </div>
                   <div class="col-12">
                     <div class="form-floating mb-3">
                       <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" value="#password#" required>

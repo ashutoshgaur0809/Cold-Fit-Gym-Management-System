@@ -23,7 +23,7 @@
 	</style>
 
 	<!--- Title --->
-	<title>Welcome to Coldbox!</title>
+	<title>ColdFit : GYMMS </title>
 </head>
 <body
 	data-spy="scroll"

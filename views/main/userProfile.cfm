@@ -13,6 +13,29 @@
 <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/registrations/registration-9/assets/css/registration-9.css">
 <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    .profile-image-container {
+    width: 150px; /* Set the desired width of the image */
+    height: 150px; /* Set the desired height of the image */
+    overflow: hidden;
+    border-radius: 50%; /* Make it circular */
+    background-color: hsl(0, 14%, 50%); /* Add background color if image fails to load */
+}
+
+.profile-img {
+    width: 100%; /* Make the image fill the container */
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the container without distortion */
+}
+
+.shadow {
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5); /* Add a subtle shadow for depth */
+}
+
+.border-light {
+    border-color: rgba(255, 255, 255, 0.5); /* Light border for lines */
+}
+</style>
 </head>
 
 <body class="bg-dark">
@@ -20,6 +43,7 @@
   <cfquery name="durationPack">
     select * from registration where id = #session.userID#
 </cfquery>
+
   <!--- <cfdump var="#session#"><cfabort> --->
     <nav class="navbar bg-dark navbar-expand-lg sticky-top">
         <div class="container">
@@ -84,14 +108,24 @@
     <!-- Profile 1 - Bootstrap Brain Component -->
 <section class="bg-dark py-3 py-md-5 py-xl-8">
     <div class="container">
-      <div class="row justify-content-md-center">
-        <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
-            <hr class="w-100 mx-auto mb-5 mb-xl-9 border-dark-subtle">
-            <h2 class="mb-4 display-7 text-center text-light">Welcome, #durationPack.fullname#</h2>
-          <h2 class="mb-4 display-7 text-center text-light">Profile</h2>
-          <hr class="w-100 mx-auto mb-5 mb-xl-9 border-dark-subtle">
+        <div class="row justify-content-center text-center">
+            <div class="col-12 col-md-10 col-lg-8 col-xl-7 col-xxl-6">
+                <!-- Profile Image with Styling -->
+                <div class="profile-image-container mx-auto mb-4">
+                    <img src="#durationPack.profile_img#" alt="Profile Image" class="profile-img rounded-circle shadow">
+                </div>
+                
+                <!-- Horizontal Line -->
+                <hr class="w-75 mx-auto mb-5 mb-xl-9 border-light opacity-75">
+        
+                <!-- Welcome and Profile Text -->
+                <h2 class="display-7 text-light font-weight-bold">Welcome, #durationPack.fullname#</h2>
+                <h2 class="display-7 text-light font-weight-bold mb-4">Profile</h2>
+        
+                <!-- Horizontal Line -->
+                <hr class="w-75 mx-auto mb-5 mb-xl-9 border-light opacity-75">
+            </div>
         </div>
-      </div>
     </div>
   
     <div class="container">

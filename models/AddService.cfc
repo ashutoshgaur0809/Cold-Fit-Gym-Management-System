@@ -13,6 +13,8 @@ component singleton {
 		return this;
 	};
 
+	
+
 	public any function updateProductRate(struct formdata){
 		// writeDump(formdata);
 	

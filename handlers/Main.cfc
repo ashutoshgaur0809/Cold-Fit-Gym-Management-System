@@ -5,7 +5,7 @@ component extends="coldbox.system.EventHandler" {
 	 * Default Action
 	 */
 	function index( event, rc, prc ){
-		prc.welcomeMessage = "Welcome to ColdBox!";
+		prc.welcomeMessage = "ColdFit:GYM MS!";
 		event.setView( "main/index" );
 	}
 
@@ -125,42 +125,80 @@ component extends="coldbox.system.EventHandler" {
 
 	// User Registration after email duplication check
 	function register(event, rc, prc) {
-		// Retrieve individual form fields using event.getValue()
+		// Dump the rc object for debugging
+		// writeDump(rc);
+		// abort;
+	
+		// Retrieve individual form fields
 		var fullname = event.getValue('fullname');
 		var nemail = event.getValue('email');
 		var phone = event.getValue('phone');
 		var city = event.getValue('city');
 		var password = event.getValue('password');
-		// Format the current date and time for database insertion
 		var currentDateTime = DateFormat(now(), "yyyy-mm-dd") & " " & TimeFormat(now(), "HH:mm:ss");
+		
+		// Initialize the image path variable
+		var profileImgPath = "";
+	
+		// Check if an image was uploaded
+		if (structKeyExists(form, "image") AND len(trim(form.image))) {
+			try {
+				cffile(
+					action = "upload",
+					filefield = "image",
+					destination = expandPath('/includes/j/assets/img/profile'),
+					nameconflict = "MakeUnique",
+					result = "profileResult"
+				);
+	
+				// Capture the uploaded file's path
+				profileImgPath = '/includes/j/assets/img/profile/' & profileResult.serverFile;
+				// writeDump(profileResult);
+	
+			} catch (any e) {
+				// Handle upload errors gracefully
+				writeOutput("File upload failed: " & e.message);
+				abort;
+			}
+		} else {
+			writeOutput("No file uploaded.");
+		}
+	
 		// Query to check if the email already exists
 		var checkEmail = queryExecute("
 			SELECT email 
 			FROM registration 
 			WHERE email = :email", 
 			{email: nemail});
+	
 		// If the email does not exist, insert the new user
 		if (checkEmail.recordCount EQ 0) {
 			queryExecute("
-				INSERT INTO registration (fullname, email, phone, city, password, date) 
-				VALUES (:fullname, :email, :phone, :city, :password, :date)",
+				INSERT INTO registration (fullname, email, phone, city, password, date, profile_img) 
+				VALUES (:fullname, :email, :phone, :city, :password, :date, :profile_img)",
 				{ fullname=fullname,
 				  email=nemail,
 				  phone=phone,
 				  city=city,
 				  password=password,
-				  date=currentDateTime }
+				  date=currentDateTime,
+				  profile_img=profileImgPath }
 			);
+	
 			// Redirect to the sign-in page
 			event.setView("main/sign_in");
-		} 
-		else {// Set a flag in rc to indicate the email already exists
+		} else {
+			// Set a flag in rc to indicate the email already exists
 			rc.emailExists = true;
-			rc.email = nemail; 
+			rc.email = nemail;
+	
 			// Render the registration page again
 			event.setView("main/index");
 		}
 	}
+	
+	
+	
 
 	
 
@@ -172,7 +210,7 @@ component extends="coldbox.system.EventHandler" {
 		var password = event.getValue("password");
 	
 		var checkEmailWithPass = queryExecute("
-			SELECT id, fullname, email, phone, city, password, date
+			SELECT *
 			FROM registration
 			WHERE email = :email AND password = :password",
 			{email: nemail, password: password}
@@ -194,6 +232,10 @@ component extends="coldbox.system.EventHandler" {
 			SESSION.city = getUser.CITY;
 			SESSION.password = getUser.PASSWORD;
 			SESSION.date = getUser.DATE;
+			prc.profile_img = getUser.profile_img;
+			// writeDump(prc);
+			// abort;
+
 	
 			// Redirect to the afterLogin page
 			event.setView("main/afterLogin");
@@ -450,6 +492,8 @@ component extends="coldbox.system.EventHandler" {
             event.setView("main/AdminProfile", {id: AdminId});
         }
 	}
+
+	
 	
 
 	

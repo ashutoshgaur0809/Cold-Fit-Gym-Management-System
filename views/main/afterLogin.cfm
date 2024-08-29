@@ -25,6 +25,19 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
+.profile-img-hover {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0px 4px 8px rgb(255, 147, 46); /* Initial subtle shadow */
+}
+
+.profile-img-hover:hover {
+    transform: scale(1.1); /* Slightly increase the size on hover */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5); /* Add a larger shadow on hover */
+    border-color: rgb(255, 147, 46); /* Change border color on hover */
+}
+
+
+
 .styled-span {
       font-family: 'Bebas Neue', cursive;
       font-size: 1em;
@@ -32,10 +45,10 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-image: linear-gradient(gold, gold);
+      background-image: linear-gradient(rgb(255, 147, 46), rgb(255, 147, 46));
       background-size: 100% 10px;
       background-repeat: no-repeat;
-      background-position: 100% 0%;
+      background-position: 0% 0%;
       transition: background-size 0.7s, background-position 0.5s ease-in-out;
   }
 
@@ -72,7 +85,7 @@
             background-color: #f2f2f2; /* Zebra striping */
         }
         .table tbody tr:hover {
-            background-color: #e6f7ff; /* Hover effect */
+            background-color: #e6f7ff; 
             cursor: pointer;
         }
         .table td, .table th {
@@ -112,7 +125,7 @@
             border: none;
         }
         .btn-warning:hover {
-            background-color: #e0a800;
+            background-color: rgb(255, 147, 46);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
         .btn-danger {
@@ -136,7 +149,7 @@
         }
 
         .card:hover {
-          border: 5px solid hsl(58, 100%, 50%);
+          border: 5px solid rgb(255, 147, 46);
           box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); 
           transform: scale(1.05);
           /* filter: brightness(1.3) contrast(2); */
@@ -148,7 +161,7 @@
         }
 
         .card:hover .card-title {
-            color: #f1556c;
+            color: rgb(255, 147, 46);
         }
 
         .card-text span {
@@ -156,7 +169,7 @@
         }
 
         .card:hover .card-text span {
-            color: #f1556c;
+            color: rgb(255, 147, 46);
         }
         .styled-dropdown-btn {
           border-radius: 0;
@@ -167,7 +180,7 @@
     }
 
     .styled-dropdown-btn:hover {
-        background-image: linear-gradient(gold,gold); 
+        background-image: linear-gradient(rgb(255, 147, 46),rgb(255, 147, 46)); 
         color: hsl(0, 0%, 100%);
         transition: background-position 0.7s, background-size 0.5s ease-in-out;
     }
@@ -182,7 +195,7 @@
 
     /* Dropdown Items */
     .styled-dropdown-item {
-        background-image: linear-gradient(to right, gold, gold);
+        background-image: linear-gradient(to right, rgb(255, 147, 46), rgb(255, 147, 46));
         background-size: 100% 2px;
         background-repeat: no-repeat;
         background-position: 100% 0%;
@@ -219,7 +232,7 @@
           }
           .styled-nav {
         position: relative;
-        background-image: linear-gradient(gold,gold);
+        background-image: linear-gradient(rgb(255, 147, 46),rgb(255, 147, 46));
         background-size: 100% 3px;
         background-repeat: no-repeat;
         background-position: 100% 100%;
@@ -234,6 +247,12 @@
     </style>
 </head>
 <body class="bg-dark text-light" id="bodyContainer">
+  <!--- <cfdump var="#prc#"><cfabort> --->
+  <!--- <cfdump var="#(/includes/j/assets/img/profile/1m_1.jpg)#"> --->
+
+  
+  <!--- <img src="/includes/j/assets/img/profile/designer.jpeg" alt="Profile Image" style="max-width: 150px; max-height: 150px;"> --->
+  <!--- <cfabort> --->
     <!-- Navbar -->
     <cfif NOT structKeyExists(session, "userID")>
         <cflocation url="sign_in.cfm">
@@ -252,6 +271,7 @@
                   <a class="navbar-brand text-light" href="main/afterLogin/cfm" id="fire_icon">
                   
                     <span style="font-family: Arial; font-size: 24px;">GYM <i class="fa-solid fa-dumbbell"></i> MS</span><br>
+
                     <span style="font-family: Arial; font-size: 14px;">Gym Management System</span>
                 </a>
               
@@ -290,10 +310,18 @@
                       select * from registration where id = #session.userID#
                      </cfquery>
                     <div class="dropdown">
-                      <button class="btn dropdown-toggle styled-dropdown-btn styled-nav" style="margin-top:15px" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          <span> #userInfo.fullname#</span>
-                      </button>
+                      <button class="btn dropdown-toggle  " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        
+                        
+                        <img src="<cfoutput>#userInfo.PROFILE_IMG#</cfoutput>" 
+                              alt="Profile Image"
+                              class="profile-img-hover"
+                              style="max-width: 50px; height: 50px; border-style: groove; border-radius: 50%;">
+                          </button>
                       <ul class="dropdown-menu dropdown-menu-right bg-dark styled-dropdown-menu">
+                       
+                          <li><span class="dropdown-item text-light bg-dark">  #userInfo.fullname#</span></li>
+                          <li><hr class="dropdown-divider"></li>
                           <li><a class="dropdown-item styled-dropdown-item" href="main/userProfile">Profile</a></li>
                           <li><hr class="dropdown-divider"></li>
                           <li><button id="logoutBtn" class="btn  styled-dropdown-item btn-block"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button></li>
@@ -400,7 +428,7 @@
                     </div>
                   </div>
                 </a>
-                <a  href="main.category/cat_Service" style="text-decoration: none;">
+                <a  href="main.category/cat_Service" style="text-decoration: none; ">
                   <div class="col">
                     <div class="card shadow-sm">
                       <img src="../../layouts/img/cat3.png" class="card-img-top" alt="">
